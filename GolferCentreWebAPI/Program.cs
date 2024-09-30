@@ -5,6 +5,7 @@ using GolferCentreWebAPI.Service.Course;
 using GolferCentreWebAPI.Service.Golfer;
 using GolferCentreWebAPI.Service.Score;
 using GolferCentreWebAPI.Service.Tournament;
+using GolferCentreWebAPI.Service.Users;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IGolferService, GolferService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IScoreService, ScoreService>();
 builder.Services.AddScoped<ITournamentService, TournamentService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
