@@ -5,7 +5,7 @@ namespace GolferCentreWebAPI.Models;
 
 public partial class Tournament
 {
-    public Guid TournamentId { get; set; } = Guid.NewGuid();
+    public Guid TournamentId { get; set; }
 
     public string TournamentName { get; set; } = null!;
 

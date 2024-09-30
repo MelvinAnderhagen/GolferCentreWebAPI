@@ -5,7 +5,7 @@ namespace GolferCentreWebAPI.Models;
 
 public partial class Course
 {
-    public Guid CourseId { get; set; } = Guid.NewGuid();
+    public Guid CourseId { get; set; }
 
     public string CourseName { get; set; } = null!;
 

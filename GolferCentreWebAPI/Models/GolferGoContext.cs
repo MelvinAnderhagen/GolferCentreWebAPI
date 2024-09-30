@@ -6,6 +6,9 @@ namespace GolferCentreWebAPI.Models;
 
 public partial class GolferGoContext : DbContext
 {
+    public GolferGoContext()
+    {
+    }
 
     public GolferGoContext(DbContextOptions<GolferGoContext> options)
         : base(options)
@@ -19,6 +22,12 @@ public partial class GolferGoContext : DbContext
     public virtual DbSet<Score> Scores { get; set; }
 
     public virtual DbSet<Tournament> Tournaments { get; set; }
+
+    public virtual DbSet<User> Users { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=AUD-R90YPCMA\\SQLEXPRESS;Initial Catalog=golferGo;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,6 +55,7 @@ public partial class GolferGoContext : DbContext
                 .HasColumnName("GolferID");
             entity.Property(e => e.Country).HasMaxLength(100);
             entity.Property(e => e.FirstName).HasMaxLength(100);
+            entity.Property(e => e.GolferImage).HasMaxLength(255);
             entity.Property(e => e.Handicap).HasColumnType("decimal(4, 2)");
             entity.Property(e => e.LastName).HasMaxLength(100);
         });
@@ -90,6 +100,30 @@ public partial class GolferGoContext : DbContext
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("TournamentID");
             entity.Property(e => e.TournamentName).HasMaxLength(200);
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCACFC28008C");
+
+            entity.HasIndex(e => e.Username, "UQ__Users__536C85E4A2B52848").IsUnique();
+
+            entity.HasIndex(e => e.Email, "UQ__Users__A9D1053414FABF26").IsUnique();
+
+            entity.Property(e => e.UserId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("UserID");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.LastLoginAt).HasColumnType("datetime");
+            entity.Property(e => e.PasswordHash).HasMaxLength(255);
+            entity.Property(e => e.Role)
+                .HasMaxLength(50)
+                .HasDefaultValue("User");
+            entity.Property(e => e.Username).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

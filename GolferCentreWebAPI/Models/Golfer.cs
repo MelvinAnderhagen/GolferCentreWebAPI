@@ -15,5 +15,7 @@ public partial class Golfer
 
     public string Country { get; set; } = null!;
 
+    public string? GolferImage { get; set; }
+
     public virtual ICollection<Score> Scores { get; set; } = new List<Score>();
 }
